@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct SkyViewApp: App {
+    @State private var container = DependencyContainer()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WeatherListConfigurator.configure(container: container)
         }
     }
 }
