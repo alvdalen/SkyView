@@ -94,6 +94,9 @@
 			);
 			mainGroup = CED756002F3E6B9F00FB8844;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CED756702F3F484B00FB8844 /* XCRemoteSwiftPackageReference "json" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CED7560A2F3E6B9F00FB8844 /* Products */;
 			projectDirPath = "";
@@ -274,6 +277,10 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(SRCROOT)/Vendor/taocpp-json/include",
+					"$(SRCROOT)/Vendor/taocpp-pegtl/include",
+				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -306,6 +313,10 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/Vendor/taocpp-json/include",
+					"$(SRCROOT)/Vendor/taocpp-pegtl/include",
+				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -332,6 +343,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CED756702F3F484B00FB8844 /* XCRemoteSwiftPackageReference "json" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/taocpp/json";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = CED756012F3E6B9F00FB8844 /* Project object */;
 }
