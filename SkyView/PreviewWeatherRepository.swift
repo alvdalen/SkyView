@@ -7,22 +7,24 @@
 
 /// Репозиторий для Preview и тестов. Не обращается к сети.
 struct PreviewWeatherRepository: WeatherFetching {
-    func fetchWeather(for city: City) async throws -> CityWeather {
-        CityWeather(
-            city: city,
-            current: TodayWeather(
-                temperature: 0,
-                feelsLike: 0,
-                humidity: 0,
-                pressure: 0,
-                windSpeed: 0,
-                visibility: 0,
-                clouds: 0,
-                description: "—",
-                icon: "—",
-                updatedAt: Date()
-            ),
-            daily: []
+    func fetchWeather(for city: City) async -> Result<CityWeather, Error> {
+        .success(
+            CityWeather(
+                city: city,
+                current: TodayWeather(
+                    temperature: 0,
+                    feelsLike: 0,
+                    humidity: 0,
+                    pressure: 0,
+                    windSpeed: 0,
+                    visibility: 0,
+                    clouds: 0,
+                    description: "—",
+                    icon: "—",
+                    updatedAt: Date()
+                ),
+                daily: []
+            )
         )
     }
 

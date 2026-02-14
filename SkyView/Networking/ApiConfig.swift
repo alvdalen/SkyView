@@ -9,5 +9,5 @@ import Foundation
 
 enum ApiConfig {
     static let baseURL = "https://api.openweathermap.org/data/3.0"
-    static var apiKey: String { "50af18abcf488c152fedf67f2b8c71ec" }
+    static var apiKey: String { "a62b7d1bf3e1e2e7c8863c062cff85d0" }
 }

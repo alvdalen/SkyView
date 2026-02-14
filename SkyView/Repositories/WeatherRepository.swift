@@ -17,23 +17,23 @@ final class WeatherRepository: WeatherFetching {
         self.parser = parser
     }
 
-    func fetchWeather(for city: City) async throws -> CityWeather {
-        let url = try makeURL(city: city)
-        let data = try await dataLoader.load(from: url)
-        let (single, list): (TodayWeather, [DayForecast]) = try parser.parse(data: data)
-        return CityWeather(city: city, current: single, daily: list)
+    func fetchWeather(for city: City) async -> Result<CityWeather, Error> {
+        do {
+            let url = try makeURL(city: city)
+            let data = try await dataLoader.load(from: url)
+            let (single, list): (TodayWeather, [DayForecast]) = try parser.parse(data: data)
+            return .success(CityWeather(city: city, current: single, daily: list))
+        } catch {
+            return .failure(error)
+        }
     }
 
     func fetchAllWeather() async -> [Result<CityWeather, Error>] {
         await withTaskGroup(of: (String, Result<CityWeather, Error>).self) { group in
             for city in CapitalsProvider.list {
                 group.addTask {
-                    do {
-                        let weather = try await self.fetchWeather(for: city)
-                        return (city.id, .success(weather))
-                    } catch {
-                        return (city.id, .failure(error))
-                    }
+                    let result = await self.fetchWeather(for: city)
+                    return (city.id, result)
                 }
             }
 
