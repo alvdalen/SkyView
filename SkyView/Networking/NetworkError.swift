@@ -5,8 +5,6 @@
 //  Created by Adam on 13.02.2026.
 //
 
-import Foundation
-
 enum NetworkError: Error, LocalizedError {
     case invalidURL
     case noData

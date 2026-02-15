@@ -5,6 +5,8 @@
 //  Created by Adam on 14.02.2026.
 //
 
+import Foundation
+
 /// Репозиторий для Preview и тестов. Не обращается к сети.
 struct PreviewWeatherRepository: WeatherFetching {
     func fetchWeather(for city: City) async -> Result<CityWeather, Error> {
@@ -12,18 +14,18 @@ struct PreviewWeatherRepository: WeatherFetching {
             CityWeather(
                 city: city,
                 current: TodayWeather(
-                    temperature: 0,
-                    feelsLike: 0,
-                    humidity: 0,
-                    pressure: 0,
-                    windSpeed: 0,
-                    visibility: 0,
-                    clouds: 0,
-                    description: "—",
-                    icon: "—",
+                    temperature: 12,
+                    feelsLike: 10,
+                    humidity: 65,
+                    pressure: 1015,
+                    windSpeed: 4,
+                    visibility: 10_000,
+                    clouds: 40,
+                    description: "Облачно",
+                    icon: "03d",
                     updatedAt: Date()
                 ),
-                daily: []
+                daily: Self.makePreviewDaily()
             )
         )
     }
@@ -45,8 +47,26 @@ struct PreviewWeatherRepository: WeatherFetching {
                         icon: "01d",
                         updatedAt: Date()
                     ),
-                    daily: []
+                    daily: Self.makePreviewDaily()
                 )
+            )
+        }
+    }
+
+    private static func makePreviewDaily() -> [DayForecast] {
+        let day: TimeInterval = 86400
+        return (0..<8).map { i in
+            DayForecast(
+                id: "preview_\(i)",
+                date: Date(timeIntervalSinceNow: day * Double(i)),
+                tempMin: 8,
+                tempMax: 18,
+                pressure: 1013,
+                humidity: 55,
+                visibility: 10_000,
+                clouds: 30,
+                description: "Ясно",
+                icon: "01d"
             )
         }
     }

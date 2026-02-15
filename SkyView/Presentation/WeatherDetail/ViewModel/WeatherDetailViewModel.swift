@@ -9,7 +9,6 @@ import Combine
 
 @MainActor
 final class WeatherDetailViewModel: ObservableObject {
-
     let cityWeather: CityWeather
 
     init(cityWeather: CityWeather) {
@@ -26,12 +25,11 @@ final class WeatherDetailViewModel: ObservableObject {
         cityWeather.daily
     }
 
-    /// Название города для заголовка.
+    /// Название города для заголовка (только город, без страны).
     var cityDisplayName: String {
-        cityWeather.city.displayName
+        cityWeather.city.name
     }
 
-    /// Форматированная дата дня (для строки в списке дней).
     func dayTitle(for day: DayForecast) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE, d MMM"

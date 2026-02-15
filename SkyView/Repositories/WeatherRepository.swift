@@ -7,20 +7,50 @@
 
 import Foundation
 
-final class WeatherRepository: WeatherFetching {
+protocol WeatherFetching: Sendable {
+    func fetchWeather(for city: City) async -> Result<CityWeather, Error>
+    func fetchAllWeather() async -> [Result<CityWeather, Error>]
+}
 
+final class WeatherRepository {
+    // MARK: Private Properties
     private let dataLoader: DataLoading
     private let parser: WeatherParsing
 
+    // MARK: Initializers
     init(dataLoader: DataLoading, parser: WeatherParsing) {
         self.dataLoader = dataLoader
         self.parser = parser
     }
 
+    // MARK: Private Methods
+    private func makeURL(city: City) throws -> URL {
+        guard var components = URLComponents(string: ApiConfig.baseURL + "/onecall") else {
+            throw NetworkError.invalidURL
+        }
+
+        components.queryItems = [
+            URLQueryItem(name: "lat", value: "\(city.lat)"),
+            URLQueryItem(name: "lon", value: "\(city.lon)"),
+            URLQueryItem(name: "appid", value: ApiConfig.apiKey),
+            URLQueryItem(name: "units", value: "metric"),
+            URLQueryItem(name: "lang", value: "ru"),
+            URLQueryItem(name: "exclude", value: "minutely,hourly,alerts"),
+        ]
+
+        guard let url = components.url else {
+            throw NetworkError.invalidURL
+        }
+        return url
+    }
+}
+
+// MARK: - WeatherFetching
+extension WeatherRepository: WeatherFetching {
     func fetchWeather(for city: City) async -> Result<CityWeather, Error> {
         do {
             let url = try makeURL(city: city)
-            let data = try await dataLoader.load(from: url)
+            let data = try await dataLoader.fetchData(from: url)
             let (single, list): (TodayWeather, [DayForecast]) = try parser.parse(data: data)
             return .success(CityWeather(city: city, current: single, daily: list))
         } catch {
@@ -46,24 +76,5 @@ final class WeatherRepository: WeatherFetching {
                 results.first { $0.0 == city.id }?.1
             }
         }
-    }
-
-    private func makeURL(city: City) throws -> URL {
-        guard var components = URLComponents(string: ApiConfig.baseURL + "/onecall") else {
-            throw NetworkError.invalidURL
-        }
-
-        components.queryItems = [
-            URLQueryItem(name: "lat", value: "\(city.lat)"),
-            URLQueryItem(name: "lon", value: "\(city.lon)"),
-            URLQueryItem(name: "appid", value: ApiConfig.apiKey),
-            URLQueryItem(name: "units", value: "metric"),
-            URLQueryItem(name: "exclude", value: "minutely,hourly,alerts"),
-        ]
-
-        guard let url = components.url else {
-            throw NetworkError.invalidURL
-        }
-        return url
     }
 }
