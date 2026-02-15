@@ -15,13 +15,13 @@ struct WeatherCityCell: View {
     let isRefreshing: Bool
     let onRefresh: () -> Void
     private var isCold: Bool {
-        weather.current.temperature < 10
+        weather.current.temperature < LocalConstants.coldTemperatureThreshold
     }
-
+    
     private var accentColor: Color {
         isCold ? Color.blue : Color.orange
     }
-
+    
     var body: some View {
         HStack(spacing: LocalConstants.mainHStackSpacing) {
             accentBar
@@ -33,44 +33,44 @@ struct WeatherCityCell: View {
         .padding(.vertical, LocalConstants.verticalPadding)
         .frame(height: LocalConstants.cellHeight)
     }
-
+    
     private var accentBar: some View {
         RoundedRectangle(cornerRadius: LocalConstants.accentBarCornerRadius)
             .fill(accentColor)
             .frame(width: LocalConstants.accentBarWidth)
     }
-
+    
     private var cityRow: some View {
         HStack(spacing: LocalConstants.cityRowSpacing) {
-            Image(systemName: "mappin")
+            Image(systemName: Asset.Symbols.mappin)
                 .font(.system(size: LocalConstants.pinIconSize, weight: .semibold))
                 .foregroundStyle(accentColor)
             Text(capitalizedFirst(weather.city.name))
                 .font(.system(size: LocalConstants.cityNameFontSize, weight: .semibold))
-                .lineLimit(1)
+                .lineLimit(LocalConstants.lineLimitSingle)
         }
     }
-
+    
     private var badgesRow: some View {
         HStack(spacing: LocalConstants.badgesSpacing) {
-            miniBadge(icon: "gauge.medium", value: "\(weather.current.pressure)")
-            miniBadge(icon: "humidity.fill", value: "\(weather.current.humidity)%")
-            miniBadge(icon: "cloud.fill", value: "\(weather.current.clouds)%")
+            miniBadge(icon: Asset.Symbols.gaugeMedium, value: "\(weather.current.pressure)")
+            miniBadge(icon: Asset.Symbols.humidityFill, value: "\(weather.current.humidity)%")
+            miniBadge(icon: Asset.Symbols.cloudFill, value: "\(weather.current.clouds)%")
         }
     }
-
+    
     private var leftColumn: some View {
         VStack(alignment: .leading, spacing: LocalConstants.leftVStackSpacing) {
             cityRow
             Text(capitalizedFirst(weather.current.description))
                 .font(.system(size: LocalConstants.descriptionFontSize))
                 .foregroundStyle(.secondary)
-                .lineLimit(1)
+                .lineLimit(LocalConstants.lineLimitSingle)
                 .minimumScaleFactor(LocalConstants.descriptionMinimumScale)
             badgesRow
         }
     }
-
+    
     private var tempBlock: some View {
         HStack(spacing: LocalConstants.tempBlockSpacing) {
             Text("\(Int(weather.current.temperature))°")
@@ -84,7 +84,7 @@ struct WeatherCityCell: View {
                 .frame(width: LocalConstants.weatherIconFrameWidth)
         }
     }
-
+    
     private var refreshButton: some View {
         Button {
             onRefresh()
@@ -94,7 +94,7 @@ struct WeatherCityCell: View {
                     .controlSize(.small)
                     .frame(width: LocalConstants.refreshButtonFrameSize, height: LocalConstants.refreshButtonFrameSize)
             } else {
-                Image(systemName: "arrow.clockwise")
+                Image(systemName: Asset.Symbols.arrowClockwise)
                     .font(.system(size: LocalConstants.refreshIconSize))
                     .foregroundStyle(.secondary)
                     .frame(width: LocalConstants.refreshButtonFrameSize, height: LocalConstants.refreshButtonFrameSize)
@@ -103,7 +103,7 @@ struct WeatherCityCell: View {
         .buttonStyle(.plain)
         .disabled(isRefreshing)
     }
-
+    
     private func miniBadge(icon: String, value: String) -> some View {
         HStack(spacing: LocalConstants.miniBadgeSpacing) {
             Image(systemName: icon)
@@ -113,22 +113,22 @@ struct WeatherCityCell: View {
         }
         .foregroundStyle(.secondary)
     }
-
+    
     private func capitalizedFirst(_ string: String) -> String {
         guard let first = string.first else { return string }
         return first.uppercased() + string.dropFirst().lowercased()
     }
-
+    
     private func iconName(for icon: String) -> String {
         let isNight = icon.hasSuffix("n")
-        if icon.contains("01") { return isNight ? "moon.stars.fill" : "sun.max.fill" }
-        if icon.contains("02") || icon.hasPrefix("2") { return isNight ? "cloud.moon.fill" : "cloud.sun.fill" }
-        if icon.contains("03") || icon.contains("04") { return isNight ? "cloud.moon.fill" : "cloud.sun.fill" }
-        if icon.contains("09") || icon.contains("10") { return "cloud.rain.fill" }
-        if icon.contains("11") { return "cloud.bolt.fill" }
-        if icon.contains("13") { return "snowflake" }
-        if icon.contains("50") { return "water.waves" }
-        return "cloud.fill"
+        if icon.contains("01") { return isNight ? Asset.Symbols.moonStarsFill : Asset.Symbols.sunMaxFill }
+        if icon.contains("02") || icon.hasPrefix("2") { return isNight ? Asset.Symbols.cloudMoonFill : Asset.Symbols.cloudSunFill }
+        if icon.contains("03") || icon.contains("04") { return isNight ? Asset.Symbols.cloudMoonFill : Asset.Symbols.cloudSunFill }
+        if icon.contains("09") || icon.contains("10") { return Asset.Symbols.cloudRainFill }
+        if icon.contains("11") { return Asset.Symbols.cloudBoltFill }
+        if icon.contains("13") { return Asset.Symbols.snowflake }
+        if icon.contains("50") { return Asset.Symbols.waterWaves }
+        return Asset.Symbols.cloudFill
     }
 }
 
@@ -140,11 +140,15 @@ private extension WeatherCityCell {
         static let verticalPadding: CGFloat = 4
         static let cellHeight: CGFloat = 76
 
+        // Порог температуры для синего/оранжевого акцента (°C)
+        static let coldTemperatureThreshold: Double = 10
+
         // Цветная полоска слева (акцент по температуре)
         static let accentBarCornerRadius: CGFloat = 1.5
         static let accentBarWidth: CGFloat = 4
 
-        // Левая колонка: отступы, строка с городом (иконка pin и название)
+        // Левая колонка: отступы, строка с городом (иконка pin и название), одна строка текста
+        static let lineLimitSingle: Int = 1
         static let leftVStackSpacing: CGFloat = 8
         static let cityRowSpacing: CGFloat = 4
         static let pinIconSize: CGFloat = 13

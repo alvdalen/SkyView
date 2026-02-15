@@ -12,13 +12,13 @@ extension TodayWeather: MappableFromDictionary {
         guard let dtNum = dict[kSkyViewKeyDt] as? NSNumber else { return nil }
         let updatedAt = Date(timeIntervalSince1970: dtNum.doubleValue)
         return TodayWeather(
-            temperature: (dict[kSkyViewKeyTemp] as? NSNumber)?.doubleValue ?? 0,
-            feelsLike: (dict[kSkyViewKeyFeelsLike] as? NSNumber)?.doubleValue ?? 0,
-            humidity: (dict[kSkyViewKeyHumidity] as? NSNumber)?.intValue ?? 0,
-            pressure: (dict[kSkyViewKeyPressure] as? NSNumber)?.intValue ?? 0,
-            windSpeed: (dict[kSkyViewKeyWindSpeed] as? NSNumber)?.doubleValue ?? 0,
-            visibility: (dict[kSkyViewKeyVisibility] as? NSNumber)?.intValue ?? 0,
-            clouds: (dict[kSkyViewKeyClouds] as? NSNumber)?.intValue ?? 0,
+            temperature: (dict[kSkyViewKeyTemp] as? NSNumber)?.doubleValue ?? .zero,
+            feelsLike: (dict[kSkyViewKeyFeelsLike] as? NSNumber)?.doubleValue ?? .zero,
+            humidity: (dict[kSkyViewKeyHumidity] as? NSNumber)?.intValue ?? .zero,
+            pressure: (dict[kSkyViewKeyPressure] as? NSNumber)?.intValue ?? .zero,
+            windSpeed: (dict[kSkyViewKeyWindSpeed] as? NSNumber)?.doubleValue ?? .zero,
+            visibility: (dict[kSkyViewKeyVisibility] as? NSNumber)?.intValue ?? .zero,
+            clouds: (dict[kSkyViewKeyClouds] as? NSNumber)?.intValue ?? .zero,
             description: (dict[kSkyViewKeyDescription] as? String) ?? "",
             icon: (dict[kSkyViewKeyIcon] as? String) ?? "",
             updatedAt: updatedAt

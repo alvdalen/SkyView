@@ -24,7 +24,7 @@ struct WeatherDetailHeaderView: View {
                     .font(.system(size: LocalConstants.titleFontSize, weight: .regular))
                     .foregroundStyle(.primary)
                 HStack(spacing: LocalConstants.spacingTighter) {
-                    Image(systemName: "thermometer.medium")
+                    Image(systemName: Asset.Symbols.thermometerMedium)
                         .font(.system(size: LocalConstants.mediumIconSize))
                         .foregroundStyle(.primary)
                     Text("\(Int(temperature))°")

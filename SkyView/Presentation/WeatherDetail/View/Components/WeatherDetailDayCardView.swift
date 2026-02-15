@@ -42,9 +42,9 @@ struct WeatherDetailDayCardView: View {
 
     private var badgesRow: some View {
         HStack(spacing: LocalConstants.spacingContent) {
-            MiniBadgeView(icon: "gauge.medium", value: "\(day.pressure)", accent: accentColor)
-            MiniBadgeView(icon: "humidity.fill", value: "\(day.humidity)%", accent: accentColor)
-            MiniBadgeView(icon: "cloud.fill", value: "\(day.clouds)%", accent: accentColor)
+MiniBadgeView(icon: Asset.Symbols.gaugeMedium, value: "\(day.pressure)", accent: accentColor)
+                    MiniBadgeView(icon: Asset.Symbols.humidityFill, value: "\(day.humidity)%", accent: accentColor)
+                    MiniBadgeView(icon: Asset.Symbols.cloudFill, value: "\(day.clouds)%", accent: accentColor)
         }
         .padding(.horizontal, LocalConstants.badgeContainerHorizontalPadding)
         .padding(.vertical, LocalConstants.badgeContainerVerticalPadding)

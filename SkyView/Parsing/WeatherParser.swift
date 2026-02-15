@@ -53,7 +53,7 @@ private extension WeatherParsing {
     func parseList<Element: MappableFromDictionary>(_ json: String) throws -> [Element] {
         let arr = try SkyViewJSONBridge.parseDaily(fromJSON: json)
         return arr.enumerated().compactMap { index, dict in
-            let dt = (dict[kSkyViewKeyDt] as? NSNumber)?.doubleValue ?? 0
+            let dt = (dict[kSkyViewKeyDt] as? NSNumber)?.doubleValue ?? .zero
             return Element.from(dict, id: "\(index)_\(Int(dt))")
         }
     }

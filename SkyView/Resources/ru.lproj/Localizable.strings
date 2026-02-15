@@ -1,0 +1,30 @@
+/*
+  Localizable.strings
+  SkyView
+
+  Created by Adam on 15.02.2026.
+  
+*/
+
+/* Список погоды */
+"weather_title" = "Погода";
+"retry_button" = "Повторить";
+"open_weather_map_link" = "Open Weather Map";
+
+/* Детали погоды - секция прогноза */
+"forecast_section_title" = "Прогноз на 8 дней";
+
+/* Подписи метрик в сетке */
+"metric_wind" = "Ветер";
+"metric_feels_like" = "Ощущается";
+"metric_humidity" = "Влажность";
+"metric_pressure" = "Давление";
+"metric_visibility" = "Видимость";
+"metric_clouds" = "Облачность";
+
+/* Единицы измерения */
+"unit_wind_speed" = "м/с";
+"unit_pressure" = "гПа";
+"visibility_km_10_plus" = "10+ км";
+"visibility_km_format" = "%.1f км";
+"visibility_m" = "м";

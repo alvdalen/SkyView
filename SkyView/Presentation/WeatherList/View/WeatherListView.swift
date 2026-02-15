@@ -19,7 +19,7 @@ struct WeatherListView: View {
     var body: some View {
         NavigationStack {
             stateContent
-                .navigationTitle("Погода")
+                .navigationTitle(Localized.weatherTitle)
                 .navigationBarTitleDisplayMode(.large)
                 .navigationDestination(for: CityWeather.self) { cityWeather in
                     WeatherDetailConfigurator.configure(cityWeather: cityWeather)
@@ -54,7 +54,7 @@ struct WeatherListView: View {
             Text(message)
                 .foregroundStyle(.red)
                 .multilineTextAlignment(.center)
-            Button("Повторить") {
+            Button(Localized.retryButton) {
                 Task { await viewModel.refresh() }
             }
         }
@@ -89,8 +89,8 @@ struct WeatherListView: View {
     private var sectionFooter: some View {
         Link(destination: URL(string: "https://openweathermap.org")!) {
             HStack(spacing: LocalConstants.footerHStackSpacing) {
-                Text("Open Weather Map")
-                Image(systemName: "arrow.up.right")
+                Text(Localized.openWeatherMapLink)
+                Image(systemName: Asset.Symbols.arrowUpRight)
                     .font(.caption2)
             }
             .foregroundStyle(.secondary)

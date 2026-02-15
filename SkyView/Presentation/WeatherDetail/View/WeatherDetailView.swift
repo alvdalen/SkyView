@@ -39,13 +39,14 @@ struct WeatherDetailView: View {
     }
 
     private var accentColor: Color {
-        viewModel.current.temperature < 10 ? Color.blue : Color.orange
+        viewModel.current.temperature < LocalConstants.coldTemperatureThreshold ? Color.blue : Color.orange
     }
 }
 
 // MARK: - Constants
 private extension WeatherDetailView {
     enum LocalConstants {
+        static let coldTemperatureThreshold: Double = 10
         static let screenHorizontalPadding: CGFloat = 20
         static let scrollBottomPadding: CGFloat = 32
         static let spacingContent: CGFloat = 16

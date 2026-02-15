@@ -29,38 +29,38 @@ struct WeatherDetailMetricsGridView: View {
         
         return LazyVGrid(columns: columns, spacing: spacing) {
             MetricTileView(
-                icon: "wind",
-                label: "Ветер",
-                value: "\(WeatherDetailHelpers.formatDouble(current.windSpeed)) м/с",
+                icon: Asset.Symbols.wind,
+                label: Localized.metricWind,
+                value: "\(WeatherDetailHelpers.formatDouble(current.windSpeed)) \(Localized.unitWindSpeed)",
                 accentColor: accentColor)
             
             MetricTileView(
-                icon: "thermometer.medium",
-                label: "Ощущается",
+                icon: Asset.Symbols.thermometerMedium,
+                label: Localized.metricFeelsLike,
                 value: "\(Int(current.feelsLike))°",
                 accentColor: accentColor)
             
             MetricTileView(
-                icon: "humidity.fill",
-                label: "Влажность",
+                icon: Asset.Symbols.humidityFill,
+                label: Localized.metricHumidity,
                 value: "\(current.humidity)%",
                 accentColor: accentColor)
             
             MetricTileView(
-                icon: "gauge.medium",
-                label: "Давление",
-                value: "\(current.pressure) гПа",
+                icon: Asset.Symbols.gaugeMedium,
+                label: Localized.metricPressure,
+                value: "\(current.pressure) \(Localized.unitPressure)",
                 accentColor: accentColor)
             
             MetricTileView(
-                icon: "eye",
-                label: "Видимость",
+                icon: Asset.Symbols.eye,
+                label: Localized.metricVisibility,
                 value: WeatherDetailHelpers.visibilityString(current.visibility),
                 accentColor: accentColor)
             
             MetricTileView(
-                icon: "cloud.fill",
-                label: "Облачность",
+                icon: Asset.Symbols.cloudFill,
+                label: Localized.metricClouds,
                 value: "\(current.clouds)%",
                 accentColor: accentColor)
         }
@@ -82,16 +82,16 @@ private struct MetricTileView: View {
             Text(label)
                 .font(.system(size: WeatherDetailMetricsGridView.LocalConstants.metricLabelFontSize))
                 .foregroundStyle(.secondary)
-                .lineLimit(1)
+                .lineLimit(WeatherDetailMetricsGridView.LocalConstants.metricTileLineLimit)
                 .minimumScaleFactor(WeatherDetailMetricsGridView.LocalConstants.minimumScaleFactor)
             Text(value)
                 .font(.system(size: WeatherDetailMetricsGridView.LocalConstants.bodyMediumFontSize, weight: .medium, design: .rounded))
                 .foregroundStyle(.primary)
-                .lineLimit(1)
+                .lineLimit(WeatherDetailMetricsGridView.LocalConstants.metricTileLineLimit)
                 .minimumScaleFactor(WeatherDetailMetricsGridView.LocalConstants.minimumScaleFactor)
         }
         .frame(maxWidth: .infinity)
-        .aspectRatio(1, contentMode: .fill)
+        .aspectRatio(WeatherDetailMetricsGridView.LocalConstants.metricTileAspectRatio, contentMode: .fill)
         .padding(WeatherDetailMetricsGridView.LocalConstants.metricTilePadding)
         .background(
             RoundedRectangle(cornerRadius: WeatherDetailMetricsGridView.LocalConstants.cardRadius, style: .continuous)
@@ -107,6 +107,8 @@ private extension WeatherDetailMetricsGridView {
         static let spacingTight: CGFloat = 10
         static let metricTilePadding: CGFloat = 14
         static let cardRadius: CGFloat = 18
+        static let metricTileLineLimit: Int = 1
+        static let metricTileAspectRatio: CGFloat = 1
         static let secondaryIconSize: CGFloat = 22
         static let metricLabelFontSize: CGFloat = 11
         static let bodyMediumFontSize: CGFloat = 14

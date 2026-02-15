@@ -14,12 +14,12 @@ extension DayForecast: MappableFromDictionary {
         return DayForecast(
             id: id,
             date: date,
-            tempMin: (dict[kSkyViewKeyTempMin] as? NSNumber)?.doubleValue ?? 0,
-            tempMax: (dict[kSkyViewKeyTempMax] as? NSNumber)?.doubleValue ?? 0,
-            pressure: (dict[kSkyViewKeyPressure] as? NSNumber)?.intValue ?? 0,
-            humidity: (dict[kSkyViewKeyHumidity] as? NSNumber)?.intValue ?? 0,
-            visibility: (dict[kSkyViewKeyVisibility] as? NSNumber)?.intValue ?? 0,
-            clouds: (dict[kSkyViewKeyClouds] as? NSNumber)?.intValue ?? 0,
+            tempMin: (dict[kSkyViewKeyTempMin] as? NSNumber)?.doubleValue ?? .zero,
+            tempMax: (dict[kSkyViewKeyTempMax] as? NSNumber)?.doubleValue ?? .zero,
+            pressure: (dict[kSkyViewKeyPressure] as? NSNumber)?.intValue ?? .zero,
+            humidity: (dict[kSkyViewKeyHumidity] as? NSNumber)?.intValue ?? .zero,
+            visibility: (dict[kSkyViewKeyVisibility] as? NSNumber)?.intValue ?? .zero,
+            clouds: (dict[kSkyViewKeyClouds] as? NSNumber)?.intValue ?? .zero,
             description: (dict[kSkyViewKeyDescription] as? String) ?? "",
             icon: (dict[kSkyViewKeyIcon] as? String) ?? ""
         )

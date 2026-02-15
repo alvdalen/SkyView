@@ -17,10 +17,10 @@ struct WeatherDetailDailySectionView: View {
         VStack(alignment: .leading, spacing: LocalConstants.spacingContent) {
             VStack(alignment: .leading, spacing: LocalConstants.spacingSmall) {
                 HStack(spacing: LocalConstants.spacingSmall) {
-                    Image(systemName: "calendar")
+                    Image(systemName: Asset.Symbols.calendar)
                         .font(.system(size: LocalConstants.sectionIconSize))
                         .foregroundStyle(.secondary)
-                    sectionLabel("Прогноз на 8 дней")
+                    sectionLabel(Localized.forecastSectionTitle)
                 }
                 .padding(.leading, LocalConstants.sectionContentLeading)
                 Divider()
@@ -30,7 +30,7 @@ struct WeatherDetailDailySectionView: View {
                 WeatherDetailDayCardView(
                     day: day,
                     dayTitle: dayTitle(day),
-                    accentColor: day.tempMax < 10 ? Color.blue : Color.orange
+                    accentColor: day.tempMax < LocalConstants.coldTemperatureThreshold ? Color.blue : Color.orange
                 )
             }
         }
@@ -46,6 +46,7 @@ struct WeatherDetailDailySectionView: View {
 // MARK: - Constants
 private extension WeatherDetailDailySectionView {
     enum LocalConstants {
+        static let coldTemperatureThreshold: Double = 10
         static let spacingContent: CGFloat = 16
         static let spacingSmall: CGFloat = 8
         static let sectionContentLeading: CGFloat = 10
