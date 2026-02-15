@@ -10,6 +10,8 @@ enum Localized {
     static var weatherTitle: String { String(localized: "weather_title") }
     static var retryButton: String { String(localized: "retry_button") }
     static var openWeatherMapLink: String { String(localized: "open_weather_map_link") }
+    static var errorAlertTitle: String { String(localized: "error_alert_title") }
+    static var alertDismiss: String { String(localized: "alert_dismiss") }
 
     // Детали погоды - секция прогноза
     static var forecastSectionTitle: String { String(localized: "forecast_section_title") }

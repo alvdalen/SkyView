@@ -26,6 +26,11 @@ struct WeatherListView: View {
                 }
         }
         .spinnerOverlay(isLoading: isLoading)
+        .errorAlert(
+            message: viewModel.errorToShow?.message,
+            onRetry: viewModel.errorToShow != nil ? { viewModel.retry() } : nil,
+            onDismiss: viewModel.clearError
+        )
         .task {
             if (viewModel.loadedItems ?? []).isEmpty {
                 await viewModel.refresh()
@@ -33,33 +38,18 @@ struct WeatherListView: View {
         }
     }
 
-    /// Контент по состоянию загрузки:
-    /// `idle/loading` - пусто (спиннер поверх),
-    /// `loaded` - список городов,
-    /// `failed` - текст ошибки и кнопка "Повторить".
+    /// Контент по состоянию:
+    /// `initial/loading` - пусто (спиннер),
+    /// `loaded` - список.
+    /// Ошибки через`.errorAlert`.
     @ViewBuilder
     private var stateContent: some View {
         switch viewModel.state {
-        case .idle, .loading:
+        case .initial, .loading:
             EmptyView()
         case .loaded(let items):
             listContent(items: items)
-        case .failed(let message):
-            errorContent(message: message)
         }
-    }
-
-    private func errorContent(message: String) -> some View {
-        VStack(spacing: LocalConstants.failedStackSpacing) {
-            Text(message)
-                .foregroundStyle(.red)
-                .multilineTextAlignment(.center)
-            Button(Localized.retryButton) {
-                Task { await viewModel.refresh() }
-            }
-        }
-        .padding(LocalConstants.errorPadding)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private func listContent(items: [CityWeather]) -> some View {
@@ -105,8 +95,6 @@ struct WeatherListView: View {
 // MARK: - Constants
 private extension WeatherListView {
     enum LocalConstants {
-        static let failedStackSpacing: CGFloat = 14
-        static let errorPadding: CGFloat = 16
         static let footerHStackSpacing: CGFloat = 4
         static let footerTopPadding: CGFloat = 22
     }

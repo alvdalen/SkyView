@@ -10,8 +10,9 @@ import Combine
 @MainActor
 final class WeatherListViewModel: ObservableObject {
     // MARK: Private Properties
-    @Published private(set) var state: WeatherListState = .idle
+    @Published private(set) var state: WeatherListState = .initial
     @Published private(set) var refreshingCityId: String? = nil
+    @Published private(set) var errorToShow: (message: String, retryContext: RetryContext)?
     private let useCase: LoadAllWeatherUseCase
     
     // MARK: Internal Properties
@@ -32,7 +33,8 @@ final class WeatherListViewModel: ObservableObject {
 
         let outcome = await useCase.execute()
         if outcome.items.isEmpty, let message = outcome.errorMessage {
-            state = .failed(message)
+            state = .loaded([])
+            errorToShow = (message, .fullRefresh)
         } else {
             state = .loaded(outcome.items)
         }
@@ -51,18 +53,42 @@ final class WeatherListViewModel: ObservableObject {
                 state = .loaded(items)
             }
         } catch {
-            
+            errorToShow = (error.localizedDescription, .refreshCity(cityId))
+        }
+    }
+
+    func clearError() {
+        errorToShow = nil
+    }
+
+    func retry() {
+        guard let ctx = errorToShow?.retryContext else { return }
+        errorToShow = nil
+        switch ctx {
+        case .fullRefresh:
+            Task { await refresh() }
+        case .refreshCity(let id):
+            Task { await refreshCity(id) }
         }
     }
 }
 
+// MARK: - RetryContext
+/// Контекст повтора для единого алерта ошибок.
+enum RetryContext {
+    case fullRefresh
+    case refreshCity(String)
+}
+
 // MARK: - State
-/// Состояние экрана списка погоды.
+/// Состояния экрана списка погоды: что показывать в контенте (пусто со спиннером или список).
+/// `initial`: до первой загрузки.
+/// `loading`: идёт запрос.
+/// `loaded`: данные есть, показываем список (может быть пустым при ошибке, сама ошибка в `errorToShow`).
 enum WeatherListState {
-    case idle
+    case initial
     case loading
     case loaded([CityWeather])
-    case failed(String)
 }
 
 extension WeatherListState {

@@ -10,6 +10,8 @@
 "weather_title" = "Погода";
 "retry_button" = "Повторить";
 "open_weather_map_link" = "Open Weather Map";
+"error_alert_title" = "Ошибка";
+"alert_dismiss" = "Закрыть";
 
 /* Детали погоды - секция прогноза */
 "forecast_section_title" = "Прогноз на 8 дней";
