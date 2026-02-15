@@ -27,14 +27,16 @@ enum WeatherDetailHelpers {
     }
 
     static func sfSymbol(for icon: String) -> String {
+        let code = icon.filter(\.isNumber)
         let isNight = icon.hasSuffix("n")
-        if icon.contains("01") { return isNight ? "moon.stars.fill" : "sun.max.fill" }
-        if icon.contains("02") || icon.hasPrefix("2") { return isNight ? "cloud.moon.fill" : "cloud.sun.fill" }
-        if icon.contains("03") || icon.contains("04") { return isNight ? "cloud.moon.fill" : "cloud.sun.fill" }
-        if icon.contains("09") || icon.contains("10") { return "cloud.rain.fill" }
-        if icon.contains("11") { return "cloud.bolt.fill" }
-        if icon.contains("13") { return "snowflake" }
-        if icon.contains("50") { return "water.waves" }
-        return "cloud.fill"
+        switch code {
+        case "01": return isNight ? "moon.stars.fill" : "sun.max.fill"
+        case "02", "03", "04", "2": return isNight ? "cloud.moon.fill" : "cloud.sun.fill"
+        case "09", "10": return "cloud.rain.fill"
+        case "11": return "cloud.bolt.fill"
+        case "13": return "snowflake"
+        case "50": return "water.waves"
+        default: return "cloud.fill"
+        }
     }
 }
